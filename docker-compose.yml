@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15.5-bullseye
+    container_name: postgres15_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    networks:
+      pgdb15_mynetwork:
+       ipv4_address: 172.26.3.3
+    volumes:
+      - ./data:/var/run/postgresql
+    ports:
+      - 5435:5432
+
+  adminer:
+    image: adminer
+    container_name: admniner_for_pg15
+    restart: always
+    ports:
+      - 8085:8080
+
+networks:
+  pgdb15_mynetwork:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.2.0/16
+
